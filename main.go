@@ -15,6 +15,13 @@ func main() {
 
 	r.Use(cors.Default())
 
+	hub := newHub()
+	go hub.run()
+
+	r.GET("/ws", func(c *gin.Context) {
+		serveWs(hub, c.Writer, c.Request)
+	})
+
 	r.GET("/books", controllers.FindBooks)
 	r.POST("/books", controllers.CreateBook)
 	r.GET("/book/:id", controllers.FindBook)
