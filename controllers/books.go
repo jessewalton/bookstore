@@ -41,7 +41,9 @@ func UpdateBook(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": book})
 }
 
+// func CreateBook(c *gin.Context, ws websocket.Conn) {
 func CreateBook(c *gin.Context) {
+
 	db := db.DB
 
 	// Validate input
@@ -55,6 +57,7 @@ func CreateBook(c *gin.Context) {
 	book := models.Book{Title: input.Title, Author: input.Author}
 	db.Create(&book)
 
+	// ws.Write
 	c.JSON(http.StatusOK, gin.H{"data": book})
 
 }
