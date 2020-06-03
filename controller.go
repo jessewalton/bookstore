@@ -1,6 +1,7 @@
-package controllers
+package main
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"bookstore/db"
@@ -42,8 +43,7 @@ func UpdateBook(c *gin.Context) {
 }
 
 // func CreateBook(c *gin.Context, ws websocket.Conn) {
-func CreateBook(c *gin.Context) {
-
+func CreateBook(c *gin.Context, h *Hub) {
 	db := db.DB
 
 	// Validate input
@@ -57,8 +57,15 @@ func CreateBook(c *gin.Context) {
 	book := models.Book{Title: input.Title, Author: input.Author}
 	db.Create(&book)
 
-	// ws.Write
+	// send http response
 	c.JSON(http.StatusOK, gin.H{"data": book})
+
+	// write to websocket
+	bookJSON, err := json.Marshal(book)
+	if err != nil {
+		return
+	}
+	h.broadcast <- []byte(bookJSON)
 
 }
 

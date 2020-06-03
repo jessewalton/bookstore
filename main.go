@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bookstore/controllers"
+	// "bookstore/controllers"
 	"bookstore/db"
 
 	"github.com/gin-contrib/cors"
@@ -22,11 +22,13 @@ func main() {
 		serveWs(hub, c.Writer, c.Request)
 	})
 
-	r.GET("/books", controllers.FindBooks)
-	r.POST("/books", controllers.CreateBook)
-	r.GET("/book/:id", controllers.FindBook)
-	r.PATCH("/books/:id", controllers.UpdateBook)
-	r.DELETE("/book/:id", controllers.DeleteBook)
+	r.GET("/books", FindBooks)
+	r.POST("/books", func(c *gin.Context) {
+		CreateBook(c, hub)
+	})
+	r.GET("/book/:id", FindBook)
+	r.PATCH("/books/:id", UpdateBook)
+	r.DELETE("/book/:id", DeleteBook)
 
 	r.Run()
 }
