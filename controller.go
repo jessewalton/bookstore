@@ -13,11 +13,13 @@ import (
 type CreateBookInput struct {
 	Title  string `json:"title" binding:"required"`
 	Author string `json:"author" binding:"required"`
+	URL    string `json:"url"`
 }
 
 type UpdateBookInput struct {
 	Title  string `json:"title"`
 	Author string `json:"author"`
+	URL    string `json:"url"`
 }
 
 func UpdateBook(c *gin.Context) {
@@ -54,7 +56,7 @@ func CreateBook(c *gin.Context, h *Hub) {
 	}
 
 	// Create book
-	book := models.Book{Title: input.Title, Author: input.Author}
+	book := models.Book{Title: input.Title, Author: input.Author, URL: input.URL}
 	db.Create(&book)
 
 	// send http response
